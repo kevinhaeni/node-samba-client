@@ -16,6 +16,8 @@ function SambaClient(options) {
   this.username = wrap(options.username || 'guest');
   this.password = options.password ? wrap(options.password) : undefined;
   this.domain = options.domain;
+  this.path = options.path;
+  this.others = options.others;
 }
 
 SambaClient.prototype.getFile = function(path, destination, cb) {
@@ -89,18 +91,20 @@ SambaClient.prototype.getSmbClientArgs = function(fullCmd) {
     args.push('-W');
     args.push(this.domain);
   }
-
+  if (this.path) {
+    args.push('-D');
+    args.push(this.path)
+  }
+  if (this.others) {
+    arg.push(this.others);
+  }
   return args;
 };
 
 SambaClient.prototype.execute = function(cmd, cmdArgs, workingDir, cb) {
   var fullCmd = wrap(util.format('%s %s', cmd, cmdArgs));
-
   var command = ['smbclient', this.getSmbClientArgs(fullCmd).join(' ')].join(' ');
-
-  var options = {
-    cwd : workingDir
-  };
+  var options = { cwd : workingDir };
 
   exec(command, options, function(err, stdout, stderr) {
     var allOutput = (stdout + stderr);
@@ -115,7 +119,6 @@ SambaClient.prototype.runCommand = function(cmd, path, destination, cb) {
   var workingDir   = p.dirname(path);
   var fileName     = p.basename(path).replace(singleSlash, '\\');
   var cmdArgs      = util.format('%s %s', fileName, destination);
-
   this.execute(cmd, cmdArgs, workingDir, cb);
 };
 
@@ -127,7 +130,6 @@ SambaClient.prototype.getAllShares = function(cb) {
       cb(err, null);
       return;
     }
-
     var shares = [];
     for (var line in stdout.split(/\r?\n/)) {
       var words = line.split(/\t/);
@@ -135,7 +137,6 @@ SambaClient.prototype.getAllShares = function(cb) {
         shares.append(words[2].trim());
       }
     }
-
     cb(null, shares);
   });
 };
