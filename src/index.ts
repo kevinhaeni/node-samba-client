@@ -4,11 +4,6 @@ import { dirname, basename } from 'path';
 
 
 const singleSlash = /\//g;
-/*
- * NT_STATUS_NO_SUCH_FILE - when trying to dir a file in a directory that *does* exist
- * NT_STATUS_OBJECT_NAME_NOT_FOUND - when trying to dir a file in a directory that *does not* exist
- */
-const missingFileRegex = /(NT_STATUS_OBJECT_NAME_NOT_FOUND|NT_STATUS_NO_SUCH_FILE)/;
 
 export interface SmbConfig {
   address: string;
@@ -19,9 +14,7 @@ export interface SmbConfig {
   others?: string;
 }
 
-function wrap(str: string) {
-  return '\'' + str + '\'';
-}
+const wrap = (str: string) => `'${str}'`;
 
 export class SambaClient {
   private configSamba: SmbConfig;
@@ -89,7 +82,7 @@ export class SambaClient {
   }
 
   public async sendFile(path: string, destination: string): Promise<void> {
-    this.runCommand('put', path, destination.replace(singleSlash, '\\'));
+    await this.runCommand('put', path, destination.replace(singleSlash, '\\'));
   }
 
   public async deleteFile(fileName: string): Promise<void> {
@@ -126,6 +119,7 @@ export class SambaClient {
           shares.push(words[2].trim());
         }
       }
+      return shares;
     });
   }
 }
