@@ -1,0 +1,70 @@
+{
+  "rulesDirectory": [
+    "node_modules/vrsource-tslint-rules/rules",
+    "node_modules/tslint-eslint-rules/dist/rules"
+  ],
+  "rules": {
+    "ter-prefer-arrow-callback": false,
+    "jsdoc-format": true,
+    "class-name": true,
+    "curly": false,
+    "eofline": true,
+    "use-isnan": false,
+    "indent": [
+      true,
+      "spaces"
+    ],
+    "max-line-length": [
+      true,
+      100
+    ],
+    "member-ordering": [
+      true
+    ],
+    "no-arg": true,
+    "no-construct": true,
+    "no-duplicate-variable": true,
+    "no-empty": false,
+    "no-eval": true,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "true"
+      }
+    ],
+    "no-trailing-whitespace": true,
+    "no-unused-expression": false,
+    "no-unused-variable": false,
+    "no-use-before-declare": true,
+    "one-line": [
+      true,
+      "check-open-brace",
+      "check-catch",
+      "check-else",
+      "check-whitespace"
+    ],
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "semicolon": [
+      true,
+      "always"
+    ],
+    "triple-equals": [
+      true,
+      "allow-null-check"
+    ],
+    "variable-name": false,
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-type"
+    ]
+  }
+}
