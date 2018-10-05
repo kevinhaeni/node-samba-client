@@ -1,29 +1,30 @@
-node-samba-client
-=================
+# Node-Samba-Client
+## Overview
+- **node-samba-client** is a wrapper for smbclient for linux and MacOs systems to interact with **SMB/CIFS** file sharing protocol. 
+## Requirements
+* Smbclient must be installed.
+* This can be installed on OSX with Homebrew [using this script](https://raw.githubusercontent.com/Homebrew/homebrew-core/1fd22fea2426e1ae34e85177234c6e59f63add58/Formula/samba.rb) and on Ubuntu with `sudo apt install smbclient`.
 
-Node.js wrapper for smbclient
+## Installation
+Just run >>> `npm install @juangm/samba-client`
 
+## Example (using Typescript)
 
-Requirements
-------------
-Smbclient must be installed. This can be installed on OSX with Homebrew [using this script](https://raw.githubusercontent.com/Homebrew/homebrew-core/1fd22fea2426e1ae34e85177234c6e59f63add58/Formula/samba.rb) and on Ubuntu with `sudo apt install smbclient`.
+	import { SambaClient } from '@juangm/samba-client'
 
-API
--------------
-
-	var SambaClient = require('samba-client');
-
-	var client = new SambaClient({
-	  address: '//server/folder', // mandatory
-	  username: 'test', // not mandatory (defaults to guest)
-	  password: 'test', // not mandatory
-	  domain: 'WORKGROUP' // not mandatory
-	  path: 'pathToFolder' // not mandatory
-	  others: ... // not mandatory
-	});
+    const config: SmbConfig = {
+        address: '//server/folder',
+        domain: 'WORKGROUP',
+        username: 'guest',
+        password: 'test'
+        path: '...',
+        others: '...',
+    };
+    
+    const client = new SambaClient(config);
 
 	// send a file
-	client.sendFile('somePath/file', 'destinationFolder/name', function(err) {});
+	await client.sendFile('somePath/file', 'destinationFolder/name');
 
 	// get a file
-	client.getFile('someRemotePath/file', 'destinationFolder/name', function(err) {})
+	await client.getFile('someRemotePath/file', 'destinationFolder/name');
