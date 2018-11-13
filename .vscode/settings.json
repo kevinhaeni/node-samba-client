@@ -1,0 +1,8 @@
+{
+    "tslint.autoFixOnSave": true,
+    "editor.wordWrap": "on",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+}

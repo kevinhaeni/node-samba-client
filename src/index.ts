@@ -2,7 +2,6 @@ import { exec } from 'child_process';
 import { format } from 'util';
 import { dirname, basename } from 'path';
 
-
 const singleSlash = /\//g;
 
 export interface SmbConfig {
@@ -19,7 +18,7 @@ const wrap = (str: string) => `'${str}'`;
 export class SambaClient {
   private configSamba: SmbConfig;
 
-  constructor (config: SmbConfig) {
+  constructor(config: SmbConfig) {
     this.configSamba = {
       address: config.address,
       username: wrap(config.username || 'guest'),
@@ -31,31 +30,30 @@ export class SambaClient {
   }
 
   private async runCommand(cmd: string, path: string, destination: string): Promise<string> {
-    const workingDir   = dirname(path);
-    const fileName     = basename(path).replace(singleSlash, '\\');
-    const cmdArgs      = format('%s %s', fileName, destination);
+    const workingDir = dirname(path);
+    const fileName = basename(path).replace(singleSlash, '\\');
+    const cmdArgs = format('%s %s', fileName, destination);
     return await this.execute(cmd, cmdArgs, workingDir);
   }
 
   private execute(cmd: string, cmdArgs: string, workingDir: string): Promise<string> {
-      const fullCmd = wrap(format('%s %s', cmd, cmdArgs));
-      const command = ['smbclient', this.getSmbClientArgs(fullCmd).join(' ')].join(' ');
-      const options = { cwd : workingDir };
-      return new Promise((done, failed) => {
-        exec(command, options, (err, stdout, stderr) => {
-          const allMessage = stdout + stderr;
-          if (err) {
-            console.log('An error occurred: ' + allMessage);
-            failed(err);
-          } else {
-            done(allMessage);
-          }
+    const fullCmd = wrap(format('%s %s', cmd, cmdArgs));
+    const command = ['smbclient', this.getSmbClientArgs(fullCmd).join(' ')].join(' ');
+    const options = { cwd: workingDir };
+    return new Promise((done, failed) => {
+      exec(command, options, (err, stdout, stderr) => {
+        const allMessage = stdout + stderr;
+        if (err) {
+          console.log('An error occurred: ' + allMessage);
+          failed(err);
+        } else {
+          done(allMessage);
+        }
       });
     });
-
   }
 
-  private getSmbClientArgs(fullCmd: string) : string[] {
+  private getSmbClientArgs(fullCmd: string): string[] {
     let args = ['-U', this.configSamba.username];
     if (!this.configSamba.password) {
       args.push('-N');

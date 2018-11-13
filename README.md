@@ -1,4 +1,5 @@
 # Node-Samba-Client
+[![npm version](https://badge.fury.io/js/%40juangm%2Fsamba-client.svg)](https://badge.fury.io/js/%40juangm%2Fsamba-client)
 ## Overview
 - **node-samba-client** is a wrapper for smbclient for linux and MacOs systems to interact with **SMB/CIFS** file sharing protocol. 
 ## Requirements
