@@ -41,15 +41,20 @@ export class SambaClient {
     const command = ['smbclient', this.getSmbClientArgs(fullCmd).join(' ')].join(' ');
     const options = { cwd: workingDir };
     return new Promise((done, failed) => {
-      exec(command, options, (err, stdout, stderr) => {
-        const allMessage = stdout + stderr;
-        if (err) {
-          console.log('An error occurred: ' + allMessage);
-          failed(err);
-        } else {
-          done(allMessage);
-        }
-      });
+      try {
+          exec(command, options, (err, stdout, stderr) => {
+              const allMessage = stdout + stderr;
+              if (err) {
+                  console.log('An error occurred: ' + allMessage);
+                  failed(err);
+              } else {
+                  done(allMessage);
+              }
+          });
+      } catch (ex) {
+        console.log('Handled Exception: ' + ex.message);
+      }
+
     });
   }
 
